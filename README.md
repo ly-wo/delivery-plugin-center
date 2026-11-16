@@ -1,0 +1,32 @@
+# Delivery Plugin Center
+
+独立插件市场，包含 Vue 管理前端和 HTTP / MCP 只读服务；不承载插件业务。HTTP 与 MCP 共用目录、搜索、版本与包校验逻辑，默认启动 HTTP。
+
+服务启动、接口及 MCP 配置见 [市场服务说明](docs/market-service.md)。`pnpm start` 默认启动 `http://127.0.0.1:5499`；`pnpm run start:mcp` 使用 stdio，HTTP 模式同时提供 `/mcp`。
+
+```sh
+pnpm install --frozen-lockfile
+pnpm run import:releases -- /absolute/path/to/release-artifact
+pnpm test
+pnpm build
+```
+
+`import:releases` 只读取发行制品的 `catalog.json` 与 `.dwp`，不依赖插件源码。仓库已内附一批本地发布包，重新构建无需兄弟目录。SDK 通过固定版本 tarball 安装。
+
+部署管理前端时将完整 `dist` 复制到宿主 `vendor/plugin-center`，或者让宿主的 `DELIVERY_PLUGIN_CENTER_DIR` 指向这份独立构建产物。宿主只读这份批准的静态制品，在 `/plugin-center/index.html` 同源加载。访问入口为 `/agent?view=settings&settingsTab=plugins`，旧 `/agent?view=plugins` 自动跳转。管理前端不内附目录，目录由配置的 HTTP/MCP 市场服务提供；本机已安装管理与本机导入不依赖市场在线。
+
+插件中心是有管理权限的可信本地前端制品：必须由维护者审核后部署。**不将远端市场网页嵌入该同源位置。** 远端只提供受限 JSON 目录与数据包，通过宿主受控下载；中心不能直接调用本机命令。目录不可达不会影响“已安装”或本机导入。
+
+在宿主「固定插件 → 外部服务连接 → 自定义插件」配置市场连接，默认 HTTP，支持 MCP（Streamable HTTP）。本机分别填写 `http://127.0.0.1:5499` 或 `http://127.0.0.1:5499/mcp`；远端须 HTTPS。HTTP 仅允许回环地址，不跟随重定向；MCP 只读目录与发布包资源，不执行工具或本机命令。宿主校验大小、摘要、声明和实际能力，授权同意才安装。
+
+功能：三类插件及未分类兼容、搜索、固定版本选择、详情、真实安装预览/确认/任务查询、配置、权限、菜单图标与顺序、启停、更新、保留数据的移除。本地分组保存在宿主偏好中，不受发布声明升级影响。
+
+市场未配置时提供配置指引，连接失败可重试；不回退到另一份目录，已安装和本机导入仍可使用。静态中心制品缺失时宿主返回明确的 503，已安装菜单与公开本机管理接口仍可工作。SDK 的 protocol 1 是该版本最低要求，不支持的目录和包版本被拒绝。
+
+本中心管理独立安装的自定义插件；固定外部插件（如 Jira、Confluence）由宿主的「固定插件」入口管理，不在市场中重复提供同名自定义包。能力/工具/应用仅区分功能，并不等于固定/自定义来源。
+
+菜单编辑通过管理前端消息 `menu.edit` 打开宿主原有的通用「菜单外观与顺序」编辑器，支持完整工作台菜单、拖拽和中文图标预览。消息绑定同源父窗口与当前令牌；保存后宿主发送 `plugin-center-menu-changed` 通知中心刷新。此接口不引入跨仓库源码依赖。
+
+管理界面与固定插件共用宿主语义配色、字体和圆角上下文；紧凑卡片、状态标识及筛选控件保持一致。顶部仅保留市场/已安装切换与右侧刷新，不再重复展示工作台已有的页面标题。
+
+宿主也可配置 GitHub 市场仓库或单插件 Releases；该读取与凭据能力由宿主执行，中心继续消费统一目录协议。独立业务包由 [delivery-plugins](https://github.com/ly-wo/delivery-plugins) 维护。
