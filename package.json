@@ -1,0 +1,30 @@
+{
+  "name": "delivery-plugin-center",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.3.4",
+  "scripts": {
+    "build": "vue-tsc --noEmit && node scripts/build.mjs",
+    "test": "node --import tsx --test test/*.test.*",
+    "import:releases": "node scripts/import-releases.mjs",
+    "check": "vue-tsc --noEmit",
+    "start": "node server/index.mjs",
+    "start:http": "node server/index.mjs --transport http",
+    "start:mcp": "node server/index.mjs --transport mcp"
+  },
+  "dependencies": {
+    "@delivery/plugin-sdk": "file:vendor/delivery-plugin-sdk-2.1.0.tgz",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "vue": "3.5.42",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.1",
+    "@vitejs/plugin-vue": "6.0.8",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "vite": "8.2.2",
+    "vue-tsc": "3.3.11"
+  }
+}
