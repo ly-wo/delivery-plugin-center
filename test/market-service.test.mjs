@@ -110,3 +110,17 @@ test('CLI defaults to HTTP, honors port and exits cleanly on SIGTERM', async t =
   assert.equal((await (await fetch(address + '/health')).json()).transport, 'http');
   const exited = once(child, 'exit'); child.kill('SIGTERM'); assert.equal((await exited)[0], 0);
 });
+
+test('published packages preserve SDK permissions and background declarations across catalog parsing', async () => {
+  const directory = new URL('../releases', import.meta.url).pathname;
+  const catalog = createCatalog(directory);
+  for (const release of (await catalog.catalog()).releases) {
+    const { bytes } = await catalog.packageBytes(release.package);
+    const envelope = JSON.parse(bytes.toString('utf8'));
+    const manifest = JSON.parse(Buffer.from(envelope.files['plugin.json'], 'base64').toString('utf8'));
+    assert.deepEqual(release.manifest.permissions, manifest.permissions);
+    assert.deepEqual(release.manifest.capabilities, manifest.capabilities);
+    assert.deepEqual(release.manifest.background, manifest.background);
+    assert.deepEqual(release.manifest.compatibility, manifest.compatibility);
+  }
+});
