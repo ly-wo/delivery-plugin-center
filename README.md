@@ -11,7 +11,7 @@ pnpm test
 pnpm build
 ```
 
-`import:releases` 只读取发行制品的 `catalog.json` 与 `.dwp`，不依赖插件源码。仓库已内附一批本地发布包，重新构建无需兄弟目录。SDK 通过固定版本 tarball 安装。
+`import:releases` 只读取发行制品的 `catalog.json` 与 `.dwp`，不依赖插件源码。仓库已内附一批本地发布包，重新构建无需兄弟目录。SDK 通过固定版本 tarball 安装。当前市场使用 SDK 2.2.0 校验声明，同时兼容原 2.1.0 插件。
 
 部署管理前端时将完整 `dist` 复制到宿主 `vendor/plugin-center`，或者让宿主的 `DELIVERY_PLUGIN_CENTER_DIR` 指向这份独立构建产物。宿主只读这份批准的静态制品，在 `/plugin-center/index.html` 同源加载。访问入口为 `/agent?view=settings&settingsTab=plugins`，旧 `/agent?view=plugins` 自动跳转。管理前端不内附目录，目录由配置的 HTTP/MCP 市场服务提供；本机已安装管理与本机导入不依赖市场在线。
 
@@ -30,3 +30,7 @@ pnpm build
 管理界面与固定插件共用宿主语义配色、字体和圆角上下文；紧凑卡片、状态标识及筛选控件保持一致。顶部仅保留市场/已安装切换与右侧刷新，不再重复展示工作台已有的页面标题。
 
 宿主也可配置 GitHub 市场仓库或单插件 Releases；该读取与凭据能力由宿主执行，中心继续消费统一目录协议。独立业务包由 [delivery-plugins](https://github.com/ly-wo/delivery-plugins) 维护。
+
+## 1.0.1 目录更新
+
+内附 10 个自定义插件版本，新增会话空间清理 1.0.2。该插件需要支持 SDK 2.2.0 会话工作区和后台任务接口的宿主；旧宿主应先升级，不能跳过兼容检查。清理与后台任务权限为可选，安装不自动开启周期清理。既有 9 个插件的发布包及摘要保持不变。

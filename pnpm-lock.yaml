@@ -110,8 +110,8 @@ importers:
   .:
     dependencies:
       '@delivery/plugin-sdk':
-        specifier: file:vendor/delivery-plugin-sdk-2.1.0.tgz
-        version: file:vendor/delivery-plugin-sdk-2.1.0.tgz
+        specifier: file:vendor/delivery-plugin-sdk-2.2.0.tgz
+        version: file:vendor/delivery-plugin-sdk-2.2.0.tgz
       '@modelcontextprotocol/sdk':
         specifier: 1.32.2
         version: 1.32.2(zod@4.5.4)
@@ -160,9 +160,9 @@ packages:
     resolution: {integrity: sha512-UjI/dKmwJwT9pOszJitq2G6EObZPnsZUfdCr92z2TlF3EZK9J3EdfOKUrCzHl6wFthbzwhzl1Soc/UIwxRiq6w==}
     engines: {node: '>=6.9.0'}
 
-  '@delivery/plugin-sdk@file:vendor/delivery-plugin-sdk-2.1.0.tgz':
-    resolution: {integrity: sha512-xYVLoUWlbv8UutW2F+RKitrZZQvHzaBoUY9AU/+n076txC0q6A1CAATiHmJ0/3Ve9NV7jeJ0UapvFZHHHDDosA==, tarball: file:vendor/delivery-plugin-sdk-2.1.0.tgz}
-    version: 2.1.0
+  '@delivery/plugin-sdk@file:vendor/delivery-plugin-sdk-2.2.0.tgz':
+    resolution: {integrity: sha512-2GXWRuC95aaMt4F6HKKzl4sF5xrh9uJZeXguGa0lm6pvlHGCFVnhZkurSI4LKQV9KW/Ur2YeLtIvy5AaTDsQnw==, tarball: file:vendor/delivery-plugin-sdk-2.2.0.tgz}
+    version: 2.2.0
 
   '@emnapi/core@2.0.0-beta.2':
     resolution: {integrity: sha512-MzCVoWtcg4Pm2B3je5mMvYMvj3MmBKw+fU7vbsJc9/iT8ip6/eYIHo/Dsm/mr+wsHB6SEyJDuxB09Yy6r/8+4A==}
@@ -1112,7 +1112,7 @@ snapshots:
       '@babel/helper-string-parser': 7.29.14
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@delivery/plugin-sdk@file:vendor/delivery-plugin-sdk-2.1.0.tgz':
+  '@delivery/plugin-sdk@file:vendor/delivery-plugin-sdk-2.2.0.tgz':
     dependencies:
       zod: 4.5.4
 
