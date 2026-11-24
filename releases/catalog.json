@@ -1233,6 +1233,139 @@
       },
       "package": "worktree-cleanup-1.0.2.dwp",
       "sha256": "56093fcb892bc3353b182881f8e8a9487f90e0ed919643f2f81ea3a279427270"
+    },
+    {
+      "id": "jenkins-mcp",
+      "version": "1.1.1",
+      "manifest": {
+        "apiVersion": 1,
+        "id": "jenkins-mcp",
+        "name": "Jenkins MCP",
+        "version": "1.1.1",
+        "hostApi": 2,
+        "description": "查询 Jenkins 任务、构建和日志，带入 AI 对话，确认后发布已配置的任务。",
+        "category": "capability",
+        "tags": [
+          "Jenkins",
+          "CI/CD",
+          "MCP"
+        ],
+        "releaseNotes": "新增构建和日志的会话引用、参数预览、人工确认发布与排队状态核对；市场兼容包支持 SDK 2.2.0 及 2.2.1。",
+        "compatibility": {
+          "protocol": 1,
+          "sdk": "2.2.0"
+        },
+        "theme": "full",
+        "dependencies": [
+          "Jenkins 与个人 API Token。MCP 模式需要在 Jenkins 中启用 mcp-server 插件。"
+        ],
+        "provides": [
+          {
+            "name": "jenkins.read",
+            "version": 1,
+            "methods": [
+              "jenkins/list-jobs",
+              "jenkins/get-job",
+              "jenkins/get-build",
+              "jenkins/get-build-log"
+            ]
+          }
+        ],
+        "capabilities": [
+          {
+            "id": "application.local",
+            "required": true,
+            "purpose": "连接 Jenkins MCP 或 Remote API，用户确认后发布",
+            "scope": "工作台所在机器，查询并发布当前 Jenkins 账号获准的任务，可用任务名单缩小范围"
+          },
+          {
+            "id": "storage.read",
+            "required": true,
+            "purpose": "满足应用声明的记录读取契约",
+            "scope": "仅限本插件私有记录"
+          },
+          {
+            "id": "conversation.compose",
+            "required": false,
+            "purpose": "把选定构建和脱敏日志带入 AI 对话",
+            "scope": "仅填入用户确认的会话草稿"
+          }
+        ],
+        "permissions": [
+          "application.local",
+          "storage.read",
+          "conversation.compose"
+        ],
+        "page": {
+          "title": "Jenkins MCP",
+          "kind": "application"
+        },
+        "application": {
+          "frontend": "ui.js",
+          "styles": "ui.css",
+          "backend": "server.mjs"
+        },
+        "configuration": {
+          "fields": [
+            {
+              "key": "url",
+              "label": "Jenkins 地址",
+              "type": "text",
+              "description": "输入 Jenkins 基础地址，可包含部署前缀，例如 https://ci.example.com/jenkins。",
+              "required": true
+            },
+            {
+              "key": "username",
+              "label": "用户名",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "token",
+              "label": "API Token",
+              "type": "password",
+              "description": "使用可读取任务和构建的个人 API Token。更换地址或用户名时重新填写。",
+              "required": true,
+              "resetOnChange": [
+                "url",
+                "username"
+              ]
+            },
+            {
+              "key": "transport",
+              "label": "连接方式",
+              "type": "text",
+              "description": "auto 优先 Jenkins MCP，找不到端点时使用 Remote API。可指定 mcp 或 rest。",
+              "required": false,
+              "default": "auto"
+            },
+            {
+              "key": "publishJobs",
+              "label": "可发布任务限制",
+              "type": "text",
+              "description": "可填完整任务名，如 team/deploy-test。多个任务用英文逗号分隔。留空时按 Jenkins 账号的任务权限执行。",
+              "required": false
+            }
+          ]
+        },
+        "records": {
+          "storage": "private",
+          "resourceType": "jenkins-job",
+          "fields": [
+            {
+              "key": "title",
+              "label": "标题",
+              "type": "text",
+              "required": true,
+              "maxLength": 2000,
+              "default": ""
+            }
+          ]
+        },
+        "commands": []
+      },
+      "package": "jenkins-mcp-1.1.1-legacy.dwp",
+      "sha256": "3f8885ce04cdf223958b12952c7cbbcce8452f943545a0b529efe2e1bed14d55"
     }
   ]
 }
